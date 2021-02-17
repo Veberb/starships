@@ -1,0 +1,16 @@
+version: '3'
+services:
+  server:
+    build:
+      dockerfile: 'packages/server/Dockerfile'
+      context: './'
+    image: 'memory-game-server'
+    ports:
+      - '4000:4000'
+  client:
+    build:
+      dockerfile: 'packages/web/Dockerfile'
+      context: './'
+    image: 'memory-game-client'
+    ports:
+      - '3000:3000'
