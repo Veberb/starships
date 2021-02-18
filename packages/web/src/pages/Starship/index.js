@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { Flex, Stack, Text, Spinner } from '@chakra-ui/react'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import { useLocation } from 'react-router-dom'
 
 import api, { GET_STARSHIPS } from '../../axios'
 import ListStarship from '../../components/Starship/ListStarship'
 
 export const Starships = () => {
+  const location = useLocation()
+  const { megaLight } = location.state
+
   const [{ starShips, pagination, loading }, setState] = useState({
     starShips: [],
     loading: false,
@@ -44,7 +48,7 @@ export const Starships = () => {
         ...starship,
         stops:
           starship.MGLT !== 'unknown'
-            ? Math.floor(1000000 / (starship.MGLT * hoursTravelling * time))
+            ? Math.floor(megaLight / (starship.MGLT * hoursTravelling * time))
             : 'unknown'
       }
     })
@@ -57,10 +61,6 @@ export const Starships = () => {
         hasMore: starshipStops.length === 10
       }
     }))
-  }
-
-  const fetchMoreStarships = () => {
-    getStarships()
   }
 
   useEffect(() => {
