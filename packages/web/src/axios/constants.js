@@ -1,1 +1,1 @@
-export const GET_STARSHIPS = `starships`
+export const GET_STARSHIPS = `starships/`

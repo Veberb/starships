@@ -14,7 +14,7 @@ import { MdLightbulbOutline } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 
 export const Home = () => {
-  const [megaLight, setMegaLight] = useState('')
+  const [megaLight, setMegaLight] = useState(1)
 
   return (
     <Flex justify="center" alignItems="center">
@@ -36,7 +36,7 @@ export const Home = () => {
             onChange={evt => setMegaLight(evt.target.value)}
           />
           <InputRightElement width="4.5rem">
-            <Link to={{ pathname: '/starships', state: { megaLight } }}>
+            <Link to={{ pathname: '/starship', state: { megaLight } }}>
               <Button colorScheme="teal">Check</Button>
             </Link>
           </InputRightElement>

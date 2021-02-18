@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import { Home } from './pages'
+import { Home, Starships } from './pages'
 
 const Routes = () => {
   return (
@@ -21,6 +21,7 @@ const Routes = () => {
           <main>
             <Switch>
               <Route exact path="/" component={Home} />
+              <Route exact path="/starship" component={Starships} />
             </Switch>
           </main>
           <aside></aside>
