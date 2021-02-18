@@ -6,8 +6,14 @@ import api, { GET_STARSHIPS } from '../../axios'
 import ListStarship from '../../components/Starship/ListStarship'
 
 export const Starships = () => {
-  const [loading, setLoading] = useState(1)
-  const [starShips, setStarShips] = useState([])
+  const [{ starShips, pagination, loading }, setState] = useState({
+    starShips: [],
+    loading: false,
+    pagination: {
+      page: 1,
+      hasMore: true
+    }
+  })
 
   const getHoursConsumables = precision => {
     switch (precision) {
@@ -26,7 +32,9 @@ export const Starships = () => {
   }
 
   const getStarships = async () => {
-    const { data } = await api.get(GET_STARSHIPS, { params: { page: 1 } })
+    const { data } = await api.get(GET_STARSHIPS, {
+      params: { page: pagination.page }
+    })
 
     const starshipStops = data.results.map(starship => {
       const [time, precision] = starship.consumables.split(' ')
@@ -34,15 +42,29 @@ export const Starships = () => {
 
       return {
         ...starship,
-        stops: Math.floor(1000000 / (starship.MGLT * hoursTravelling * time))
+        stops:
+          starship.MGLT !== 'unknown'
+            ? Math.floor(1000000 / (starship.MGLT * hoursTravelling * time))
+            : 'unknown'
       }
     })
-    setStarShips(starshipStops)
-    setLoading(false)
+    setState(state => ({
+      ...state,
+      starShips: [...state.starShips, ...starshipStops],
+      loading: false,
+      pagination: {
+        page: +state.pagination.page + 1,
+        hasMore: starshipStops.length === 10
+      }
+    }))
+  }
+
+  const fetchMoreStarships = () => {
+    getStarships()
   }
 
   useEffect(() => {
-    setLoading(true)
+    setState(state => ({ ...state, loading: true }))
     getStarships()
   }, [])
 
@@ -62,20 +84,30 @@ export const Starships = () => {
           />
         )}
         {!loading && (
-          <InfiniteScroll
-            dataLength={starShips.length}
-            next={fetchData}
-            hasMore={true}
-            loader={<h4>Loading...</h4>}
-            endMessage={
-              <p style={{ textAlign: 'center' }}>
-                <b>Yay! You have seen it all</b>
-              </p>
-            }
-            // below props only if you need pull down functionality
-          >
-            <ListStarship listStarship={starShips} />
-          </InfiniteScroll>
+          <div id="scrollableDiv" style={{ height: 400, overflow: 'auto' }}>
+            <InfiniteScroll
+              dataLength={starShips.length}
+              next={getStarships}
+              hasMore={pagination.hasMore}
+              loader={
+                <Spinner
+                  thickness="4px"
+                  speed="0.65s"
+                  emptyColor="gray.200"
+                  color="blue.500"
+                  size="xl"
+                />
+              }
+              endMessage={
+                <p style={{ textAlign: 'center' }}>
+                  <b>Yay! You have seen it all</b>
+                </p>
+              }
+              scrollableTarget="scrollableDiv"
+            >
+              <ListStarship listStarship={starShips} />
+            </InfiniteScroll>
+          </div>
         )}
       </Stack>
     </Flex>
