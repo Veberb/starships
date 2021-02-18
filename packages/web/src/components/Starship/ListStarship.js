@@ -15,12 +15,12 @@ const ListStarship = ({ listStarship = [] }) => {
           </Tr>
         </Thead>
         <Tbody>
-          {listStarship.map((startship, index) => (
+          {listStarship.map((starship, index) => (
             <Tr key={index}>
               <Td>{index + 1}</Td>
-              <Td>{startship.name}</Td>
-              <Td>{startship.MGLT}</Td>
-              <Td>{startship.stops}</Td>
+              <Td>{starship.name}</Td>
+              <Td>{starship.MGLT}</Td>
+              <Td>{starship.stops}</Td>
             </Tr>
           ))}
         </Tbody>

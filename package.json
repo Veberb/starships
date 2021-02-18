@@ -12,7 +12,7 @@
     ]
   },
   "scripts": {
-    "start:web": "yarn workspace @startships/web start"
+    "start:web": "yarn workspace @starships/web start"
   },
   "devDependencies": {
     "@starships/eslint-config": "*"
