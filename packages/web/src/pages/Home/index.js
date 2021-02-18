@@ -14,7 +14,7 @@ import { MdLightbulbOutline } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 
 export const Home = () => {
-  const [megaLight, setMegaLight] = useState(1)
+  const [megaLight, setMegaLight] = useState()
 
   return (
     <Flex justify="center" alignItems="center">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Flex, Stack, Text, Spinner } from '@chakra-ui/react'
+import { Flex, Stack, Text, Spinner, Button } from '@chakra-ui/react'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { useLocation } from 'react-router-dom'
+import { useLocation, Link } from 'react-router-dom'
 
 import api, { GET_STARSHIPS } from '../../axios'
 import ListStarship from '../../components/Starship/ListStarship'
@@ -48,7 +48,9 @@ export const Starships = () => {
         ...starship,
         stops:
           starship.MGLT !== 'unknown'
-            ? Math.floor(megaLight / (starship.MGLT * hoursTravelling * time))
+            ? Math.floor(
+                megaLight || 1 / (starship.MGLT * hoursTravelling * time)
+              )
             : 'unknown'
       }
     })
@@ -74,6 +76,9 @@ export const Starships = () => {
         <Text fontSize="4xl">
           This is our starships avaiable for your travel! Choose wisely
         </Text>
+        <Link to={{ pathname: '/' }}>
+          <Button colorScheme="teal">Change MGLT</Button>
+        </Link>
         {loading && (
           <Spinner
             thickness="4px"
